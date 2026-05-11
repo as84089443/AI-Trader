@@ -311,9 +311,9 @@ export function LandingPage({ token }: { token: string | null }) {
               <span>{language === 'zh' ? '市场面板' : 'Market board'}</span>
             </div>
             <div className="landing-ticker-row">
-              <span>{language === 'zh' ? 'SKILL.md → 注册 → Token → Heartbeat' : 'SKILL.md → Register → Token → Heartbeat'}</span>
-              <span>{language === 'zh' ? '讨论 / 策略 / 实时操作 → 通知 → 跟单' : 'Discussion / Strategy / Live Ops → Notify → Copy'}</span>
-              <span>{language === 'zh' ? 'BTC / NVDA / POLY YES 在同一终端协同可见' : 'BTC / NVDA / POLY YES visible in one terminal'}</span>
+              <span>{language === 'zh' ? 'SKILL.md → 註冊 → Token → Heartbeat' : 'SKILL.md → Register → Token → Heartbeat'}</span>
+              <span>{language === 'zh' ? '討論 / 策略 / 即時操作 → 通知 → 跟單' : 'Discussion / Strategy / Live Ops → Notify → Copy'}</span>
+              <span>{language === 'zh' ? '2330 / 0050 / 00878 在同一終端協同可見' : '2330 / 0050 / 00878 visible in one terminal'}</span>
             </div>
             <div className="landing-board-grid">
               {statCards.map((item) => (
@@ -3036,7 +3036,7 @@ export function ExchangePage({ token, onExchangeSuccess }: { token: string, onEx
     setLoading(false)
   }
 
-  const exchangeRate = 1000 // 1 point = 1000 USD
+  const exchangeRate = 1000 // 1 point = NT$1,000 (TWD)
 
   return (
     <div className="page-container">
@@ -3069,8 +3069,8 @@ export function ExchangePage({ token, onExchangeSuccess }: { token: string, onEx
         </div>
         <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginTop: '4px' }}>
           {language === 'zh'
-            ? `您可以使用 ${points} 积分兑换 $${(points * exchangeRate).toLocaleString()} USD`
-            : `You can exchange ${points} points for $${(points * exchangeRate).toLocaleString()} USD`}
+            ? `您可以使用 ${points} 點數兌換 NT$${(points * exchangeRate).toLocaleString()}`
+            : `You can exchange ${points} points for NT$${(points * exchangeRate).toLocaleString()}`}
         </div>
       </div>
 
@@ -3085,7 +3085,7 @@ export function ExchangePage({ token, onExchangeSuccess }: { token: string, onEx
             className="form-input"
             value={amount}
             onChange={e => setAmount(e.target.value)}
-            placeholder={language === 'zh' ? '输入积分数量' : 'Enter points amount'}
+            placeholder={language === 'zh' ? '輸入點數數量' : 'Enter points amount'}
             required
           />
         </div>
@@ -3094,16 +3094,16 @@ export function ExchangePage({ token, onExchangeSuccess }: { token: string, onEx
         {amount && parseInt(amount) > 0 && (
           <div style={{ marginBottom: '16px', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
             <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '4px' }}>
-              {language === 'zh' ? '将获得' : 'You will receive'}
+              {language === 'zh' ? '將獲得' : 'You will receive'}
             </div>
             <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--success)' }}>
-              ${(parseInt(amount) * exchangeRate).toLocaleString()} USD
+              NT${(parseInt(amount) * exchangeRate).toLocaleString()}
             </div>
           </div>
         )}
 
         <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={loading || !amount || parseInt(amount) > points}>
-          {loading ? (language === 'zh' ? '兑换中...' : 'Exchanging...') : t.exchange.submit}
+          {loading ? (language === 'zh' ? '兌換中...' : 'Exchanging...') : t.exchange.submit}
         </button>
       </form>
     </div>
