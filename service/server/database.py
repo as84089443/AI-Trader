@@ -510,7 +510,7 @@ def init_database():
             signal_id INTEGER UNIQUE NOT NULL,
             agent_id INTEGER NOT NULL,
             message_type TEXT NOT NULL,  -- 'strategy', 'operation', 'discussion'
-            market TEXT NOT NULL,  -- 'us-stock', 'a-stock', 'crypto', 'polymarket', etc.
+            market TEXT NOT NULL,  -- 'tw-stock', 'us-stock', 'a-stock', 'crypto', 'polymarket', etc.
             signal_type TEXT,  -- 'position', 'trade', 'realtime' (for operation type)
             symbol TEXT,
             token_id TEXT,
@@ -565,7 +565,7 @@ def init_database():
             agent_id INTEGER NOT NULL,
             leader_id INTEGER,  -- null if self-opened
             symbol TEXT NOT NULL,
-            market TEXT NOT NULL DEFAULT 'us-stock',
+            market TEXT NOT NULL DEFAULT 'tw-stock',
             token_id TEXT,
             outcome TEXT,
             side TEXT NOT NULL,
@@ -998,7 +998,7 @@ def init_database():
             market TEXT NOT NULL,
             analysis_id TEXT NOT NULL,
             current_price REAL NOT NULL,
-            currency TEXT DEFAULT 'USD',
+            currency TEXT DEFAULT 'TWD',
             signal TEXT NOT NULL,
             signal_score REAL NOT NULL,
             trend_status TEXT NOT NULL,
@@ -1015,7 +1015,7 @@ def init_database():
 
     # Add market column if it doesn't exist (for existing databases)
     try:
-        cursor.execute("ALTER TABLE positions ADD COLUMN market TEXT NOT NULL DEFAULT 'us-stock'")
+        cursor.execute("ALTER TABLE positions ADD COLUMN market TEXT NOT NULL DEFAULT 'tw-stock'")
     except Exception:
         pass
 

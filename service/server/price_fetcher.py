@@ -613,7 +613,8 @@ def get_price_from_market(
 
 
 def _get_us_stock_price(symbol: str, executed_at: str) -> Optional[float]:
-    """获取美股价格"""
+    """Get US stock price via Alpha Vantage. Retained for dual-market support;
+    BW-Trader primary path is TWSE/FinMind (see tw_market.py, added in a later commit)."""
     # Alpha Vantage TIME_SERIES_INTRADAY 返回美国东部时间 (ET)
     try:
         # 先解析为 UTC

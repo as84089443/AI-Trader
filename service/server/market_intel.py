@@ -67,9 +67,15 @@ MARKET_INTEL_OVERVIEW_CACHE_TTL_SECONDS = max(
         STOCK_ANALYSIS_CACHE_TTL_SECONDS,
     ),
 )
+DEFAULT_CURRENCY = os.getenv("BW_TRADER_DEFAULT_CURRENCY", "TWD").strip() or "TWD"
+DEFAULT_MARKET = os.getenv("BW_TRADER_DEFAULT_MARKET", "tw-stock").strip() or "tw-stock"
+
 FALLBACK_STOCK_ANALYSIS_SYMBOLS = [
     symbol.strip().upper()
-    for symbol in os.getenv("MARKET_INTEL_STOCK_SYMBOLS", "NVDA,AAPL,MSFT,AMZN,TSLA,META").split(",")
+    for symbol in os.getenv(
+        "MARKET_INTEL_STOCK_SYMBOLS",
+        "2330,2317,2454,2308,2412,1101,0050,0056,00878",
+    ).split(",")
     if symbol.strip()
 ]
 
@@ -104,11 +110,14 @@ NEWS_CATEGORY_DEFINITIONS: dict[str, dict[str, str]] = {
     },
 }
 
+# TW sector / macro ETF map. 0050 = 元大台灣50, 00878 = 國泰永續高股息,
+# 0056 = 元大高股息. No direct TW analog for safe-haven gold or USD index,
+# so we fall back to 0050 / 00878 — UI will display them as proxies.
 MACRO_SYMBOLS = {
-    "growth": "QQQ",
-    "defensive": "XLP",
-    "safe_haven": "GLD",
-    "dollar": "UUP",
+    "growth": "0050",        # TW large-cap proxy for QQQ
+    "defensive": "00878",    # high-yield ETF as defensive proxy for XLP
+    "safe_haven": "0050",    # no TW gold ETF analog, fallback to 0050
+    "dollar": "0056",        # no TW dollar-index analog, fallback to 0056
 }
 
 MARKET_INTEL_CACHE_PREFIX = "market_intel"
@@ -132,6 +141,13 @@ US_STOCK_SYMBOL_RE = re.compile(r"^[A-Z][A-Z0-9.\-]{0,9}$")
 US_MARKET_OPEN_TIME = datetime_time(9, 30)
 US_MARKET_CLOSE_TIME = datetime_time(16, 0)
 US_EASTERN_TZ = ZoneInfo("America/New_York") if ZoneInfo is not None else timezone(timedelta(hours=-5))
+
+# TW market: TWSE/OTC trading hours are 09:00-13:30 Asia/Taipei, Mon-Fri.
+# TW symbols are 4-6 digit numeric codes (2330, 0050, 00878, ...).
+TW_STOCK_SYMBOL_RE = re.compile(r"^[0-9]{4,6}[A-Z]?$")
+TW_MARKET_OPEN_TIME = datetime_time(9, 0)
+TW_MARKET_CLOSE_TIME = datetime_time(13, 30)
+TAIPEI_TZ = ZoneInfo("Asia/Taipei") if ZoneInfo is not None else timezone(timedelta(hours=8))
 _stock_quote_cache_lock = threading.Lock()
 _stock_quote_cache_local: dict[str, tuple[float, Optional[dict[str, Any]]]] = {}
 
@@ -199,6 +215,15 @@ def _is_us_market_open(now_utc: Optional[datetime] = None) -> bool:
         return False
     current_time = reference.time()
     return US_MARKET_OPEN_TIME <= current_time < US_MARKET_CLOSE_TIME
+
+
+def _is_tw_market_open(now_utc: Optional[datetime] = None) -> bool:
+    """TWSE/OTC: 09:00-13:30 Asia/Taipei, Mon-Fri. Holidays not yet handled."""
+    reference = (now_utc or _utc_now()).astimezone(TAIPEI_TZ)
+    if reference.weekday() >= 5:
+        return False
+    current_time = reference.time()
+    return TW_MARKET_OPEN_TIME <= current_time < TW_MARKET_CLOSE_TIME
 
 
 def _stock_quote_cache_get(symbol: str) -> Optional[dict[str, Any]]:
@@ -1502,10 +1527,10 @@ def refresh_stock_analysis_snapshots() -> dict[str, Any]:
             analysis_id = f"{symbol}:{created_at}"
             rows_to_insert.append((
                 symbol,
-                "us-stock",
+                DEFAULT_MARKET,
                 analysis_id,
                 analysis["current_price"],
-                "USD",
+                DEFAULT_CURRENCY,
                 analysis["signal"],
                 analysis["signal_score"],
                 analysis["trend_status"],
