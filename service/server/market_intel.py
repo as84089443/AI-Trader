@@ -20,9 +20,9 @@ import re
 
 import requests
 try:
-    from openrouter import OpenRouter
+    from openai import OpenAI
 except ImportError:  # pragma: no cover - optional dependency in some environments
-    OpenRouter = None
+    OpenAI = None
 try:
     from zoneinfo import ZoneInfo
 except ImportError:  # pragma: no cover - Python < 3.9 fallback
@@ -33,8 +33,9 @@ from config import ALPHA_VANTAGE_API_KEY
 from database import get_db_connection
 
 ALPHA_VANTAGE_BASE_URL = os.getenv("ALPHA_VANTAGE_BASE_URL", "https://www.alphavantage.co/query").strip()
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "").strip()
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "").strip()
+GPT_PROXY_URL = os.getenv("GPT_PROXY_URL", "https://gpt-proxy.bw-space.com/v1").strip()
+GPT_PROXY_KEY = os.getenv("GPT_PROXY_KEY", "").strip()
+GPT_PROXY_MODEL = os.getenv("GPT_PROXY_MODEL", "").strip()
 MARKET_NEWS_LOOKBACK_HOURS = int(os.getenv("MARKET_NEWS_LOOKBACK_HOURS", "48"))
 MARKET_NEWS_CATEGORY_LIMIT = int(os.getenv("MARKET_NEWS_CATEGORY_LIMIT", "12"))
 MARKET_NEWS_HISTORY_PER_CATEGORY = int(os.getenv("MARKET_NEWS_HISTORY_PER_CATEGORY", "96"))
@@ -374,7 +375,7 @@ def _alpha_vantage_get(params: dict[str, Any]) -> dict[str, Any]:
     return payload
 
 
-def _extract_openrouter_text(response: Any) -> str:
+def _extract_gpt_proxy_text(response: Any) -> str:
     choices = getattr(response, "choices", None)
     if choices is None and isinstance(response, dict):
         choices = response.get("choices")
@@ -486,7 +487,7 @@ def _build_stock_analysis_fallback_summary(analysis: dict[str, Any]) -> str:
 
 def _generate_stock_analysis_summary(analysis: dict[str, Any]) -> str:
     fallback_summary = _build_stock_analysis_fallback_summary(analysis)
-    if not OPENROUTER_API_KEY or not OPENROUTER_MODEL or OpenRouter is None:
+    if not GPT_PROXY_KEY or not GPT_PROXY_MODEL or OpenAI is None:
         return fallback_summary
 
     prompt = (
@@ -512,12 +513,12 @@ def _generate_stock_analysis_summary(analysis: dict[str, Any]) -> str:
     )
 
     try:
-        with OpenRouter(api_key=OPENROUTER_API_KEY) as client:
-            response = client.chat.send(
-                model=OPENROUTER_MODEL,
-                messages=[{"role": "user", "content": prompt}],
-            )
-        content = _extract_openrouter_text(response)
+        client = OpenAI(base_url=GPT_PROXY_URL, api_key=GPT_PROXY_KEY)
+        response = client.chat.completions.create(
+            model=GPT_PROXY_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        content = _extract_gpt_proxy_text(response)
         return content[:500].strip() if content else fallback_summary
     except Exception:
         return fallback_summary
