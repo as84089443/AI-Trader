@@ -595,6 +595,15 @@ def get_price_from_market(
             # Polymarket pricing uses public Gamma + CLOB endpoints.
             # We use the current orderbook mid price (paper trading).
             price = _get_polymarket_mid_price(symbol, token_id=token_id, outcome=outcome)
+        elif market == "tw-stock":
+            # BW-Trader TW path: TWSE OpenAPI for latest daily close,
+            # FinMind as historical fallback.
+            from tw_market import get_tw_stock_price
+            from finmind_client import get_tw_stock_price_finmind
+
+            price = get_tw_stock_price(symbol, executed_at)
+            if price is None:
+                price = get_tw_stock_price_finmind(symbol, executed_at)
         else:
             if not ALPHA_VANTAGE_API_KEY or ALPHA_VANTAGE_API_KEY == "demo":
                 print("Warning: ALPHA_VANTAGE_API_KEY not set, using agent-provided price")
