@@ -1,4 +1,4 @@
-// i18n translations for AI-Trader
+// i18n translations for BW-Trader
 
 export type Language = 'zh' | 'en'
 
