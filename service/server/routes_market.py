@@ -12,6 +12,7 @@ from market_intel import (
     get_stock_analysis_history_payload,
     get_stock_analysis_latest_payload,
 )
+from news import fetch_all_sources
 from research import is_backend_available, research
 from routes_shared import utc_now_iso_z
 
@@ -21,6 +22,12 @@ from routes_shared import utc_now_iso_z
 # namespaced so a cache-flush doesn't take out the price-quote cache.
 _RESEARCH_CACHE_PREFIX = "market_intel:research"
 _RESEARCH_CACHE_TTL_SECONDS = 12 * 60 * 60
+
+# Short TTL on news: TW press wires get filed multiple times per hour, so a
+# 5-minute cache is enough to absorb a UI hot-spot without serving stale
+# headlines.
+_TW_NEWS_CACHE_PREFIX = "market_intel:tw_news"
+_TW_NEWS_CACHE_TTL_SECONDS = 5 * 60
 
 
 def register_market_routes(app: FastAPI) -> None:
@@ -56,6 +63,49 @@ def register_market_routes(app: FastAPI) -> None:
     @app.get('/api/market-intel/stocks/{symbol}/history')
     async def market_intel_stock_history(symbol: str, limit: int = 10):
         return get_stock_analysis_history_payload(symbol, limit=limit)
+
+    @app.get('/api/market-intel/news/tw')
+    async def market_intel_tw_news(limit: int = 20, refresh: bool = False):
+        """Aggregated TW finance press headlines.
+
+        Pulls 鉅亨網, 工商時報, 經濟日報, 中央社 RSS feeds, dedup'd by URL.
+        Cached 5 minutes — long enough to absorb a homepage hot-spot,
+        short enough that breaking-news still surfaces quickly.
+        """
+        safe_limit = max(1, min(limit, 50))
+        cache_key = f"{_TW_NEWS_CACHE_PREFIX}:limit={safe_limit}"
+        if not refresh:
+            cached = get_json(cache_key)
+            if cached:
+                cached["cache_hit"] = True
+                return cached
+
+        items = fetch_all_sources(limit_per_source=10)
+        # Sort newest-first; items with no parsed timestamp go to the bottom
+        # so a feed with malformed dates doesn't dominate the top of the UI.
+        items.sort(
+            key=lambda it: it.published_at or "",
+            reverse=True,
+        )
+        payload = {
+            "items": [
+                {
+                    "title": it.title,
+                    "link": it.link,
+                    "source": it.source,
+                    "source_slug": it.source_slug,
+                    "published_at": it.published_at,
+                    "summary": it.summary,
+                    "category": it.category,
+                }
+                for it in items[:safe_limit]
+            ],
+            "fetched_at": utc_now_iso_z(),
+            "cache_hit": False,
+            "total_available": len(items),
+        }
+        set_json(cache_key, payload, ttl_seconds=_TW_NEWS_CACHE_TTL_SECONDS)
+        return payload
 
     @app.get('/api/market-intel/research/{symbol}')
     async def market_intel_research(symbol: str, deep: bool = False, refresh: bool = False):
