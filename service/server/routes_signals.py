@@ -76,6 +76,28 @@ def register_signal_routes(app: FastAPI, ctx: RouteContext) -> None:
         if qty > 1_000_000:
             raise HTTPException(status_code=400, detail='Quantity too large')
 
+        # TW common-stock round-lot guard. We check before the price-fetch
+        # round-trip so an obviously-malformed order (e.g. 100 shares of
+        # 2330) gets rejected without hitting TWSE OpenAPI. Price-band and
+        # session checks are evaluated downstream once we know the price.
+        if data.market == 'tw-stock':
+            from paper_engine import (
+                REJECT_INVALID_LOT_SIZE,
+                validate_lot_size,
+            )
+
+            lot_err = validate_lot_size(qty, data.market)
+            if lot_err == REJECT_INVALID_LOT_SIZE:
+                from config import TW_ROUND_LOT_SHARES
+
+                raise HTTPException(
+                    status_code=400,
+                    detail=(
+                        f'TW stock orders must be whole multiples of {TW_ROUND_LOT_SHARES} '
+                        f'shares (round-lot). Got quantity={qty}.'
+                    ),
+                )
+
         if data.market == 'polymarket':
             if data.executed_at.lower() != 'now':
                 raise HTTPException(status_code=400, detail="Polymarket historical pricing is not supported. Use executed_at='now'.")
