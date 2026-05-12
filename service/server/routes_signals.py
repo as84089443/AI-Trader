@@ -35,6 +35,7 @@ from routes_shared import (
     utc_now_iso_z,
     validate_executed_at,
 )
+from security import assert_paper_only
 from services import _add_agent_points, _get_agent_by_token, _reserve_signal_id, _update_position_from_signal
 from team_missions import TeamMissionError, record_team_message_from_signal, record_team_reply_from_parent_signal
 from utils import _extract_token
@@ -43,6 +44,9 @@ from utils import _extract_token
 def register_signal_routes(app: FastAPI, ctx: RouteContext) -> None:
     @app.post('/api/signals/realtime')
     async def push_realtime_signal(data: RealtimeSignalRequest, authorization: str = Header(None)):
+        # Brian's red line: paper-only. `paper=false` payloads are denied with
+        # 403 before any price fetch / DB write.
+        assert_paper_only(data)
         token = _extract_token(authorization)
         agent = _get_agent_by_token(token)
         if not agent:
