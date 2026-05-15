@@ -1,0 +1,12 @@
+{
+  "action": "uv_pip_install",
+  "expires_at": "2026-05-15T16:20:48Z",
+  "from": "dispatch-m4",
+  "nonce": "f6b194e7244945e0a2462d8fa61a05cc",
+  "params": {
+    "system": true
+  },
+  "task_id": "7d71a91e-53fd-4d31-860a-119f3a03e688",
+  "timestamp": "2026-05-15T15:50:48Z",
+  "to": "m1"
+}
