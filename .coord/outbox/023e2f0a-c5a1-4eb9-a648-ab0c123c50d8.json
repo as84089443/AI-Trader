@@ -1,0 +1,10 @@
+{
+  "ack_at": "2026-05-15T16:12:44Z",
+  "action": "launchctl_bootstrap",
+  "completed_at": "2026-05-15T16:12:44Z",
+  "exit_code": 5,
+  "status": "fail",
+  "stderr": "Bootstrap failed: 5: Input/output error\nTry re-running the command as root for richer errors.\n",
+  "stdout": "",
+  "task_id": "023e2f0a-c5a1-4eb9-a648-ab0c123c50d8"
+}
