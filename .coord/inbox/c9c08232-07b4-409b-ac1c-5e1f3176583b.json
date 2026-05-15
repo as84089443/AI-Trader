@@ -1,0 +1,12 @@
+{
+  "action": "health_check",
+  "expires_at": "2026-05-15T15:57:29Z",
+  "from": "dispatch-m4",
+  "nonce": "029f420f63f44c3385aefc4cd27d5595",
+  "params": {
+    "url": "https://sparrow.bw-space.com/"
+  },
+  "task_id": "c9c08232-07b4-409b-ac1c-5e1f3176583b",
+  "timestamp": "2026-05-15T15:27:29Z",
+  "to": "m1"
+}
