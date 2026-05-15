@@ -1,0 +1,10 @@
+{
+  "action": "git_pull",
+  "expires_at": "2026-05-15T17:26:28Z",
+  "from": "dispatch-m4",
+  "nonce": "064a33b5b237413db9054f03f18081ff",
+  "params": {},
+  "task_id": "fecb73ae-eb65-45c0-8cb7-df39f751a37a",
+  "timestamp": "2026-05-15T16:56:28Z",
+  "to": "m1"
+}
