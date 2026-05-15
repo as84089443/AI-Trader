@@ -1,0 +1,9 @@
+{
+  "ack_at": "2026-05-15T15:51:47Z",
+  "completed_at": "2026-05-15T15:51:47Z",
+  "exit_code": 2,
+  "status": "denied",
+  "stderr": "denied: params failed validation for action 'uv_pip_install'",
+  "stdout": "",
+  "task_id": "7d71a91e-53fd-4d31-860a-119f3a03e688"
+}
