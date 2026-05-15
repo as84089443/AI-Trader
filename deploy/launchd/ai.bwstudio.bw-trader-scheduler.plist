@@ -6,14 +6,12 @@
     <string>ai.bwstudio.bw-trader-scheduler</string>
 
     <key>WorkingDirectory</key>
-    <string>/Users/brian/dev/AI-Trader/service</string>
+    <string>/Users/brian/dev/AI-Trader/service/server</string>
 
     <key>EnvironmentVariables</key>
     <dict>
         <key>PATH</key>
         <string>/Users/brian/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
-        <key>PYTHONPATH</key>
-        <string>/Users/brian/dev/AI-Trader/service/server</string>
         <key>PYTHONUNBUFFERED</key>
         <string>1</string>
         <key>TZ</key>
@@ -27,7 +25,7 @@
         <string>--no-project</string>
         <string>python</string>
         <string>-m</string>
-        <string>server.scheduler</string>
+        <string>scheduler</string>
     </array>
 
     <key>RunAtLoad</key>
