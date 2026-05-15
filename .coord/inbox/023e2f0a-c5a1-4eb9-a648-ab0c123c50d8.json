@@ -1,0 +1,12 @@
+{
+  "action": "launchctl_bootstrap",
+  "expires_at": "2026-05-15T16:41:56Z",
+  "from": "dispatch-m4",
+  "nonce": "230e62f3663648449f6ac8f74ec5b0ff",
+  "params": {
+    "label": "ai.bwstudio.bw-trader-api"
+  },
+  "task_id": "023e2f0a-c5a1-4eb9-a648-ab0c123c50d8",
+  "timestamp": "2026-05-15T16:11:56Z",
+  "to": "m1"
+}
