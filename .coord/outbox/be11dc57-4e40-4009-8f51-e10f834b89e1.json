@@ -1,0 +1,10 @@
+{
+  "ack_at": "2026-05-15T16:11:40Z",
+  "action": "launchctl_bootout",
+  "completed_at": "2026-05-15T16:11:40Z",
+  "exit_code": 3,
+  "status": "fail",
+  "stderr": "Boot-out failed: 3: No such process\n",
+  "stdout": "",
+  "task_id": "be11dc57-4e40-4009-8f51-e10f834b89e1"
+}
