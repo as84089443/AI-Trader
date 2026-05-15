@@ -1,0 +1,10 @@
+{
+  "ack_at": "2026-05-15T15:36:19Z",
+  "action": "uv_pip_install",
+  "completed_at": "2026-05-15T15:36:20Z",
+  "exit_code": 2,
+  "status": "fail",
+  "stderr": "error: No virtual environment found; run `uv venv` to create an environment, or pass `--system` to install into a non-virtual environment\n",
+  "stdout": "",
+  "task_id": "6ffab3d4-61b4-4b81-9b3e-d8d11a5fc6d6"
+}
