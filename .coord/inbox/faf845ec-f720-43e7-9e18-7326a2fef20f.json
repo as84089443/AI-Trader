@@ -1,0 +1,12 @@
+{
+  "action": "run_script",
+  "expires_at": "2026-05-15T17:28:55Z",
+  "from": "dispatch-m4",
+  "nonce": "882cd8b4de1d426fbe481d4151a32965",
+  "params": {
+    "name": "diagnose-bw-trader"
+  },
+  "task_id": "faf845ec-f720-43e7-9e18-7326a2fef20f",
+  "timestamp": "2026-05-15T16:58:55Z",
+  "to": "m1"
+}
