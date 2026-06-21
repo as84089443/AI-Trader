@@ -1,0 +1,176 @@
+{
+  "meta": { "count": 3 },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "validatingAirlineCodes": ["BR"],
+      "price": { "currency": "TWD", "total": "31000.00", "grandTotal": "31000.00" },
+      "itineraries": [
+        {
+          "duration": "PT13H30M",
+          "segments": [
+            {
+              "departure": { "iataCode": "TPE", "at": "2026-10-16T23:55:00" },
+              "arrival": { "iataCode": "VIE", "at": "2026-10-17T06:25:00" },
+              "carrierCode": "BR",
+              "number": "61",
+              "duration": "PT13H30M",
+              "numberOfStops": 0
+            }
+          ]
+        },
+        {
+          "duration": "PT11H50M",
+          "segments": [
+            {
+              "departure": { "iataCode": "VIE", "at": "2026-10-26T11:30:00" },
+              "arrival": { "iataCode": "TPE", "at": "2026-10-27T07:20:00" },
+              "carrierCode": "BR",
+              "number": "62",
+              "duration": "PT11H50M",
+              "numberOfStops": 0
+            }
+          ]
+        }
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "fareDetailsBySegment": [{ "segmentId": "1", "cabin": "ECONOMY" }]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "validatingAirlineCodes": ["TK"],
+      "price": { "currency": "TWD", "total": "26500.00", "grandTotal": "26500.00" },
+      "itineraries": [
+        {
+          "duration": "PT18H05M",
+          "segments": [
+            {
+              "departure": { "iataCode": "TPE", "at": "2026-10-16T21:25:00" },
+              "arrival": { "iataCode": "IST", "at": "2026-10-17T04:55:00" },
+              "carrierCode": "TK",
+              "number": "25",
+              "duration": "PT12H30M",
+              "numberOfStops": 0
+            },
+            {
+              "departure": { "iataCode": "IST", "at": "2026-10-17T07:40:00" },
+              "arrival": { "iataCode": "VIE", "at": "2026-10-17T09:00:00" },
+              "carrierCode": "TK",
+              "number": "1885",
+              "duration": "PT2H20M",
+              "numberOfStops": 0
+            }
+          ]
+        },
+        {
+          "duration": "PT16H40M",
+          "segments": [
+            {
+              "departure": { "iataCode": "VIE", "at": "2026-10-26T10:25:00" },
+              "arrival": { "iataCode": "IST", "at": "2026-10-26T13:55:00" },
+              "carrierCode": "TK",
+              "number": "1886",
+              "duration": "PT2H30M",
+              "numberOfStops": 0
+            },
+            {
+              "departure": { "iataCode": "IST", "at": "2026-10-26T16:10:00" },
+              "arrival": { "iataCode": "TPE", "at": "2026-10-27T08:05:00" },
+              "carrierCode": "TK",
+              "number": "24",
+              "duration": "PT11H55M",
+              "numberOfStops": 0
+            }
+          ]
+        }
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "fareDetailsBySegment": [
+            { "segmentId": "1", "cabin": "ECONOMY" },
+            { "segmentId": "2", "cabin": "ECONOMY" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "3",
+      "validatingAirlineCodes": ["CI"],
+      "price": { "currency": "TWD", "total": "28800.00", "grandTotal": "28800.00" },
+      "itineraries": [
+        {
+          "duration": "PT16H20M",
+          "segments": [
+            {
+              "departure": { "iataCode": "TPE", "at": "2026-10-16T07:35:00" },
+              "arrival": { "iataCode": "FRA", "at": "2026-10-16T15:05:00" },
+              "carrierCode": "CI",
+              "number": "61",
+              "duration": "PT13H30M",
+              "numberOfStops": 0
+            },
+            {
+              "departure": { "iataCode": "FRA", "at": "2026-10-16T18:25:00" },
+              "arrival": { "iataCode": "VIE", "at": "2026-10-16T19:55:00" },
+              "carrierCode": "CI",
+              "number": "9421",
+              "duration": "PT1H30M",
+              "numberOfStops": 0
+            }
+          ]
+        },
+        {
+          "duration": "PT15H05M",
+          "segments": [
+            {
+              "departure": { "iataCode": "VIE", "at": "2026-10-26T06:20:00" },
+              "arrival": { "iataCode": "FRA", "at": "2026-10-26T07:55:00" },
+              "carrierCode": "CI",
+              "number": "9420",
+              "duration": "PT1H35M",
+              "numberOfStops": 0
+            },
+            {
+              "departure": { "iataCode": "FRA", "at": "2026-10-26T12:10:00" },
+              "arrival": { "iataCode": "TPE", "at": "2026-10-27T06:25:00" },
+              "carrierCode": "CI",
+              "number": "62",
+              "duration": "PT11H15M",
+              "numberOfStops": 0
+            }
+          ]
+        }
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "fareDetailsBySegment": [
+            { "segmentId": "1", "cabin": "ECONOMY" },
+            { "segmentId": "2", "cabin": "ECONOMY" }
+          ]
+        }
+      ]
+    }
+  ],
+  "dictionaries": {
+    "carriers": {
+      "BR": "EVA AIR",
+      "TK": "TURKISH AIRLINES",
+      "CI": "CHINA AIRLINES"
+    }
+  }
+}
