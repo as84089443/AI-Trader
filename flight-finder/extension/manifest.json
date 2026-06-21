@@ -2,11 +2,13 @@
   "manifest_version": 3,
   "name": "Flight Finder — Skyscanner Interceptor",
   "version": "0.1.0",
-  "description": "Phase 1b: capture Skyscanner flight search responses and relay them to Flight Finder. Personal research helper.",
+  "description": "Phase 1b: capture Skyscanner flight search responses and relay them to the Flight Finder web app. Personal research helper.",
   "permissions": ["storage"],
   "host_permissions": [
     "https://*.skyscanner.net/*",
-    "https://*.skyscanner.com/*"
+    "https://*.skyscanner.com/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
   ],
   "background": {
     "service_worker": "src/background.js",
@@ -27,6 +29,7 @@
     }
   ],
   "action": {
-    "default_title": "Flight Finder"
+    "default_title": "Flight Finder",
+    "default_popup": "src/popup.html"
   }
 }

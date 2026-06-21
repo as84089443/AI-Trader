@@ -1,14 +1,44 @@
-// Service worker: de-duplicate and persist captured Skyscanner payloads. A later
-// iteration can POST these to the Flight Finder web app's ingest endpoint, where
-// `normalizeSkyscanner` (in @flight-finder/core) maps them into the shared model.
+// Service worker: de-duplicate captured Skyscanner payloads, persist them, and
+// forward each to the Flight Finder web app's /api/ingest endpoint, where
+// `normalizeSkyscanner` (@flight-finder/core) maps them into the shared model.
 
 const MAX_STORED = 50;
+const DEFAULT_INGEST = "http://localhost:3000/api/ingest";
 const seen = new Set();
 
-chrome.runtime.onMessage.addListener((msg) => {
+async function getIngestUrl() {
+  const { ingestUrl } = await chrome.storage.local.get({
+    ingestUrl: DEFAULT_INGEST,
+  });
+  return ingestUrl;
+}
+
+async function forward(url, payload) {
+  const ingestUrl = await getIngestUrl();
+  if (!ingestUrl) return;
+  try {
+    await fetch(ingestUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, payload }),
+    });
+  } catch (e) {
+    console.warn("[Flight Finder] forward failed:", e);
+  }
+}
+
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  // Popup asks to re-send everything we've stored.
+  if (msg?.type === "flush") {
+    chrome.storage.local.get({ captures: [] }, async (data) => {
+      for (const c of data.captures) await forward(c.url, c.payload);
+      sendResponse({ flushed: data.captures.length });
+    });
+    return true; // async response
+  }
+
   if (msg?.type !== "skyscanner-capture") return;
 
-  // Cheap de-dupe by url + payload size.
   const sig = `${msg.url}:${JSON.stringify(msg.payload).length}`;
   if (seen.has(sig)) return;
   seen.add(sig);
@@ -26,7 +56,5 @@ chrome.runtime.onMessage.addListener((msg) => {
     });
   });
 
-  // TODO (Phase 1b): forward to the web app for normalization, e.g.
-  // const endpoint = (await chrome.storage.local.get({ ingestUrl: "" })).ingestUrl;
-  // if (endpoint) fetch(endpoint, { method: "POST", body: JSON.stringify(msg) });
+  forward(msg.url, msg.payload);
 });

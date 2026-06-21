@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        width: 280px;
+        font-family: system-ui, "Noto Sans TC", sans-serif;
+        margin: 0;
+        padding: 14px;
+        background: #151b30;
+        color: #e8ecf7;
+        font-size: 13px;
+      }
+      h1 {
+        font-size: 14px;
+        margin: 0 0 10px;
+      }
+      label {
+        display: block;
+        color: #97a1c4;
+        margin: 10px 0 4px;
+        font-size: 12px;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        background: #1c2440;
+        border: 1px solid #2a3354;
+        color: #e8ecf7;
+        border-radius: 7px;
+        padding: 7px 8px;
+        font-size: 12px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      button {
+        flex: 1;
+        background: #5b8cff;
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        padding: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #1c2440;
+        border: 1px solid #2a3354;
+        color: #e8ecf7;
+      }
+      .status {
+        margin-top: 10px;
+        color: #34d399;
+        font-size: 12px;
+        min-height: 16px;
+      }
+      .count {
+        color: #ffd24a;
+        font-weight: 700;
+      }
+      a {
+        color: #5b8cff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>✈️ Flight Finder</h1>
+    <div>已攔截：<span class="count" id="count">0</span> 筆</div>
+
+    <label for="ingest">網頁接收網址 (/api/ingest)</label>
+    <input id="ingest" placeholder="http://localhost:3000/api/ingest" />
+
+    <div class="row">
+      <button id="save">儲存</button>
+      <button id="flush" class="secondary">送出全部</button>
+    </div>
+    <div class="row">
+      <button id="open" class="secondary">開啟比價網頁</button>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

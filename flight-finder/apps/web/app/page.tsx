@@ -150,7 +150,9 @@ export default function Home() {
       <p className="subtitle">
         反向出發地 + 外站四段票比價。資料顯示用 Amadeus，訂票導向 Trip.com（你賺回饋）。
         {" "}
-        <a href="/four-leg">前往外站四段票試算 →</a>
+        <a href="/four-leg">外站四段票試算 →</a>
+        {"　"}
+        <a href="/skyscanner">Skyscanner 攔截結果 →</a>
       </p>
 
       <form className="panel" onSubmit={onSearch}>
