@@ -192,3 +192,16 @@ export function evaluateFourLeg(input: FourLegInput): FourLegResult {
   }
   return result;
 }
+
+/**
+ * Evaluate several outer-station four-leg plans and rank them best-first
+ * (largest savings → smallest). Plans missing fare inputs (fourLegFare or
+ * directTwFare not yet entered) are excluded so partially-filled rows don't
+ * pollute the ranking.
+ */
+export function compareFourLegPlans(inputs: FourLegInput[]): FourLegResult[] {
+  return inputs
+    .filter((i) => i.fourLegFare > 0 && i.directTwFare > 0)
+    .map(evaluateFourLeg)
+    .sort((a, b) => b.savings - a.savings);
+}

@@ -3,6 +3,7 @@ import { amadeusTpeVie, amadeusVieTpe } from "@flight-finder/fixtures";
 import { normalizeAmadeus } from "../src/normalize";
 import {
   buildComparison,
+  compareFourLegPlans,
   compareReverseOrigin,
   evaluateFourLeg,
   routeOf,
@@ -144,6 +145,44 @@ describe("evaluateFourLeg", () => {
     expect(res.savings).toBe(-3000);
     expect(res.cheaperThanDirect).toBe(false);
     expect(res.notRecommendedReason).toContain("3000");
+  });
+});
+
+describe("compareFourLegPlans", () => {
+  it("ranks plans best-first and skips rows missing fares", () => {
+    const ranked = compareFourLegPlans([
+      {
+        outerStation: "OKA",
+        hub: "TPE",
+        destination: "VIE",
+        fourLegFare: 22000,
+        positioningCost: 5000,
+        directTwFare: 31000,
+        currency: "TWD",
+      },
+      {
+        outerStation: "KUL",
+        hub: "TPE",
+        destination: "VIE",
+        fourLegFare: 19000,
+        positioningCost: 6000,
+        directTwFare: 31000,
+        currency: "TWD",
+      },
+      {
+        // incomplete (no fourLegFare yet) -> excluded
+        outerStation: "CTS",
+        hub: "TPE",
+        destination: "VIE",
+        fourLegFare: 0,
+        positioningCost: 4000,
+        directTwFare: 31000,
+        currency: "TWD",
+      },
+    ]);
+    expect(ranked.map((r) => r.outerStation)).toEqual(["KUL", "OKA"]);
+    expect(ranked[0]!.savings).toBe(6000); // 31000 - (19000+6000)
+    expect(ranked[1]!.savings).toBe(4000); // 31000 - (22000+5000)
   });
 });
 
