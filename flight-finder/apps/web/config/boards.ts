@@ -30,12 +30,12 @@ export const BOARDS: BoardConfig[] = [
     layout: "route",
   },
   {
-    id: "reverse-europe",
-    title: "反向出發地・歐洲線（飛維也納）",
+    id: "reverse-bkk",
+    title: "反向出發地・飛曼谷（從哪裡出發最便宜）",
     description:
-      "同樣飛 VIE，比較從台北 vs 沖繩/吉隆坡/札幌/曼谷出發誰最便宜（外站票的精神）。",
-    origins: ["TPE", "OKA", "KUL", "CTS", "BKK"],
-    destinations: ["VIE"],
+      "同樣到 BKK，比較從台北 / 吉隆坡 / 香港 / 首爾 出發的最低價——反向出發地比價的精神（長程歐洲線請見『外站四段票試算』）。",
+    origins: ["TPE", "KUL", "HKG", "ICN"],
+    destinations: ["BKK"],
     layout: "origin",
   },
 ];

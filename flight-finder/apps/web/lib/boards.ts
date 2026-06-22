@@ -32,14 +32,12 @@ const SEED: Record<string, { price: number; carrier: string; stops: number }> = 
   "TPE-OKA": { price: 6500, carrier: "CI", stops: 0 },
   "TPE-ICN": { price: 7200, carrier: "TW", stops: 0 },
   "TPE-HKG": { price: 5800, carrier: "CX", stops: 0 },
-  "TPE-BKK": { price: 9100, carrier: "TG", stops: 0 },
+  "TPE-BKK": { price: 4900, carrier: "SL", stops: 0 },
   "TPE-SIN": { price: 11200, carrier: "SQ", stops: 0 },
   "TPE-DAD": { price: 8800, carrier: "VJ", stops: 0 },
-  "TPE-VIE": { price: 31000, carrier: "BR", stops: 0 },
-  "OKA-VIE": { price: 24000, carrier: "BR", stops: 1 },
-  "KUL-VIE": { price: 22000, carrier: "TK", stops: 1 },
-  "CTS-VIE": { price: 26500, carrier: "CI", stops: 1 },
-  "BKK-VIE": { price: 23000, carrier: "TK", stops: 1 },
+  "KUL-BKK": { price: 5800, carrier: "AK", stops: 0 },
+  "HKG-BKK": { price: 5900, carrier: "SL", stops: 0 },
+  "ICN-BKK": { price: 8900, carrier: "TG", stops: 1 },
 };
 
 function hash(s: string): number {
