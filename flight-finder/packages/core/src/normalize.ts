@@ -204,3 +204,89 @@ export function normalizeSkyscanner(
   }
   return out;
 }
+
+/* ----------------------------- Travelpayouts ------------------------------ */
+
+/**
+ * One item from the Travelpayouts "prices_for_dates" data API (cached cheapest
+ * fares, free for affiliates). We use it purely as a data source; booking is
+ * always rebuilt as a Trip.com affiliate link.
+ */
+export interface TravelpayoutsPrice {
+  origin: string;
+  destination: string;
+  price: number;
+  airline: string;
+  flight_number?: number | string;
+  departure_at: string; // ISO, e.g. "2026-10-16T23:55:00+08:00"
+  return_at?: string;
+  transfers?: number;
+  return_transfers?: number;
+  duration_to?: number; // minutes
+  duration_back?: number;
+}
+
+export interface TravelpayoutsResponse {
+  success?: boolean;
+  data?: TravelpayoutsPrice[];
+  currency?: string;
+}
+
+export function normalizeTravelpayouts(
+  resp: TravelpayoutsResponse,
+  currencyFallback = "TWD",
+): Itinerary[] {
+  const currency = (resp.currency ?? currencyFallback).toUpperCase();
+  return (resp.data ?? []).map((p): Itinerary => {
+    const departDate = p.departure_at.slice(0, 10);
+    const outbound: Leg = {
+      from: p.origin,
+      to: p.destination,
+      date: departDate,
+      stops: p.transfers ?? 0,
+      durationMinutes: p.duration_to ?? 0,
+      segments: [
+        {
+          from: p.origin,
+          to: p.destination,
+          departAt: p.departure_at,
+          arriveAt: "",
+          carrier: p.airline,
+          flightNumber: p.flight_number ? `${p.airline}${p.flight_number}` : "",
+          durationMinutes: p.duration_to ?? 0,
+        },
+      ],
+    };
+    const legs: Leg[] = [outbound];
+    if (p.return_at) {
+      legs.push({
+        from: p.destination,
+        to: p.origin,
+        date: p.return_at.slice(0, 10),
+        stops: p.return_transfers ?? 0,
+        durationMinutes: p.duration_back ?? 0,
+        segments: [
+          {
+            from: p.destination,
+            to: p.origin,
+            departAt: p.return_at,
+            arriveAt: "",
+            carrier: p.airline,
+            flightNumber: "",
+            durationMinutes: p.duration_back ?? 0,
+          },
+        ],
+      });
+    }
+    return {
+      id: `tp-${p.origin}-${p.destination}-${departDate}-${p.price}`,
+      source: "travelpayouts",
+      legs,
+      price: p.price,
+      currency,
+      carrier: p.airline,
+      carriers: [p.airline],
+      cabin: "ECONOMY",
+    };
+  });
+}

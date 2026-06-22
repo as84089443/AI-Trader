@@ -6,6 +6,7 @@ import type {
   FourLegResult,
   Itinerary,
   ReverseOriginResult,
+  RouteSummary,
 } from "./types";
 
 /** Outbound route of an itinerary, e.g. "TPE-VIE", from its first leg. */
@@ -22,6 +23,11 @@ export function originOf(it: Itinerary): string {
 /** Departure date of the first leg. */
 export function departDateOf(it: Itinerary): string {
   return it.legs[0]?.date ?? "";
+}
+
+/** Destination (first leg's arrival airport). */
+export function destinationOf(it: Itinerary): string {
+  return it.legs[0]?.to ?? "";
 }
 
 function sortedByPrice(items: Itinerary[]): Itinerary[] {
@@ -204,4 +210,36 @@ export function compareFourLegPlans(inputs: FourLegInput[]): FourLegResult[] {
     .filter((i) => i.fourLegFare > 0 && i.directTwFare > 0)
     .map(evaluateFourLeg)
     .sort((a, b) => b.savings - a.savings);
+}
+
+/**
+ * Collapse a set of itineraries (possibly across many dates) into one cheapest
+ * summary per route, sorted cheapest-first, with the single lowest flagged (★).
+ * This is what the pre-computed daily "boards" render.
+ */
+export function summarizeRoutes(itineraries: Itinerary[]): RouteSummary[] {
+  const byRoute = groupBy(itineraries, routeOf);
+  const summaries: RouteSummary[] = [];
+  for (const group of byRoute.values()) {
+    const best = sortedByPrice(group)[0];
+    if (!best) continue;
+    const out = best.legs[0];
+    const ret = best.legs[1];
+    summaries.push({
+      origin: out?.from ?? "",
+      destination: out?.to ?? "",
+      route: routeOf(best),
+      cheapest: best.price,
+      carrier: best.carrier,
+      currency: best.currency,
+      bestDepartDate: out?.date ?? "",
+      ...(ret ? { bestReturnDate: ret.date } : {}),
+      stops: out?.stops ?? 0,
+      isCheapest: false,
+      itineraryId: best.id,
+    });
+  }
+  summaries.sort((a, b) => a.cheapest - b.cheapest);
+  if (summaries[0]) summaries[0].isCheapest = true;
+  return summaries;
 }

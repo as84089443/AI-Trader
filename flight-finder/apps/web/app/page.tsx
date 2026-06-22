@@ -148,11 +148,13 @@ export default function Home() {
     <main className="container">
       <h1 className="title">✈️ Flight Finder</h1>
       <p className="subtitle">
-        反向出發地 + 外站四段票比價。資料顯示用 Amadeus，訂票導向 Trip.com（你賺回饋）。
+        反向出發地 + 外站四段票比價，訂票導向 Trip.com（你賺回饋）。
         {" "}
+        <a href="/boards">📅 每日比價表 →</a>
+        {"　"}
         <a href="/four-leg">外站四段票試算 →</a>
         {"　"}
-        <a href="/skyscanner">Skyscanner 攔截結果 →</a>
+        <a href="/skyscanner">Skyscanner 攔截 →</a>
       </p>
 
       <form className="panel" onSubmit={onSearch}>

@@ -7,6 +7,7 @@ import {
   compareReverseOrigin,
   evaluateFourLeg,
   routeOf,
+  summarizeRoutes,
 } from "../src/compare";
 import type { Itinerary } from "../src/types";
 
@@ -183,6 +184,26 @@ describe("compareFourLegPlans", () => {
     expect(ranked.map((r) => r.outerStation)).toEqual(["KUL", "OKA"]);
     expect(ranked[0]!.savings).toBe(6000); // 31000 - (19000+6000)
     expect(ranked[1]!.savings).toBe(4000); // 31000 - (22000+5000)
+  });
+});
+
+describe("summarizeRoutes", () => {
+  it("keeps the cheapest per route, sorts, and flags the overall cheapest", () => {
+    const summaries = summarizeRoutes([
+      mk("a", "TPE", "VIE", "2026-10-16", 31000, "BR"),
+      mk("b", "TPE", "VIE", "2026-10-20", 28000, "CI"), // cheaper date, same route
+      mk("c", "OKA", "VIE", "2026-10-16", 24000, "BR"),
+      mk("d", "TPE", "NRT", "2026-11-07", 7000, "JX"),
+    ]);
+    // Three routes, sorted cheapest-first.
+    expect(summaries.map((s) => s.route)).toEqual(["TPE-NRT", "OKA-VIE", "TPE-VIE"]);
+    const tpeVie = summaries.find((s) => s.route === "TPE-VIE")!;
+    expect(tpeVie.cheapest).toBe(28000); // cheapest across dates
+    expect(tpeVie.bestDepartDate).toBe("2026-10-20");
+    expect(tpeVie.carrier).toBe("CI");
+    expect(summaries[0]!.route).toBe("TPE-NRT");
+    expect(summaries[0]!.isCheapest).toBe(true);
+    expect(summaries.filter((s) => s.isCheapest)).toHaveLength(1);
   });
 });
 

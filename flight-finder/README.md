@@ -10,11 +10,16 @@ ordinary meta-search does poorly:
    self-buying a cheap positioning hop to the outer station. Savings are only real
    once the positioning cost is included, and the first leg must never be a
    no-show — the tool accounts for both.
+3. **每日比價表 (`/boards`)** — pre-computed daily price tables (competitor-style).
+   Built server-side on **ISR (revalidate daily)**, so the data API is hit at most
+   once per day and every visitor gets the cached snapshot — no cron, no consumer
+   browser extension.
 
-**Data is for display; booking is monetized via Trip.com.** Flight data comes from
-the Amadeus API (Phase 1a) and, optionally, a Skyscanner-interception browser
-extension (Phase 1b). Every "前往訂票" link is a Trip.com deep-link carrying the
-owner's affiliate IDs, pre-filled to the chosen flight.
+**Data is for display; booking is monetized via Trip.com.** The daily boards use
+the **Travelpayouts data API** (free for affiliates); the interactive search can
+use the Amadeus API; an optional Skyscanner-interception extension is a third
+source. All sources normalize into one model. Every booking link is a Trip.com
+deep-link carrying the owner's affiliate IDs, pre-filled to the chosen flight.
 
 > ⚠️ Affiliate links reach Trip.com's **search-results** layer (pre-filled), not a
 > one-click checkout for one exact fare — that needs Trip.com's B2B booking API.
@@ -40,23 +45,27 @@ path via `normalize*` → unified model.
 
 ```bash
 pnpm install
-pnpm test                  # core unit tests (27)
+pnpm test                  # core unit tests (31)
 pnpm dev                   # http://localhost:3000
 ```
 
-Without an Amadeus key the app runs in **DEMO** mode using bundled fixtures, so
-you can click through the whole flow immediately.
+With no keys the app runs in **DEMO** mode (bundled sample data on `/boards` and
+the interactive search), so you can click through the whole flow immediately.
 
 ### Configure real data + affiliate
 
-Copy `.env.example` to `apps/web/.env.local` and fill in:
+Copy `.env.example` to `apps/web/.env.local` (or set in Vercel env) and fill in:
 
 | var | purpose |
 |---|---|
-| `AMADEUS_CLIENT_ID` / `AMADEUS_CLIENT_SECRET` | Amadeus Self-Service key (free signup at developers.amadeus.com) |
+| `TRAVELPAYOUTS_TOKEN` | Travelpayouts data API token (free for affiliates) — powers the daily `/boards` tables. Unset → DEMO seed data. |
+| `AMADEUS_CLIENT_ID` / `AMADEUS_CLIENT_SECRET` | Amadeus Self-Service key for the interactive `/api/search` (optional) |
 | `AMADEUS_HOSTNAME` | `test` (sandbox, default) or `production` |
 | `TRIP_ALLIANCE_ID` / `TRIP_SID` | Trip.com affiliate IDs (default to the owner's real promo IDs) |
 | `TRIP_REGION` / `TRIP_CURRENCY` | booking deep-link locale (default `tw` / `TWD`) |
+
+The `/boards` page auto-refreshes daily via ISR — set `TRAVELPAYOUTS_TOKEN` once
+and real prices update themselves; no cron or manual step.
 
 ## Affiliate model
 

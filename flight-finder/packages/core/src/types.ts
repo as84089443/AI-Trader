@@ -6,7 +6,7 @@
  * comparison / filter / affiliate logic never needs to know where data came from.
  */
 
-export type DataSource = "amadeus" | "skyscanner";
+export type DataSource = "amadeus" | "skyscanner" | "travelpayouts";
 
 export type TripType = "oneway" | "roundtrip" | "multicity";
 
@@ -149,4 +149,27 @@ export interface FourLegResult extends FourLegInput {
   notRecommendedReason?: string;
   /** Always-on reminder surfaced in the UI. */
   warning: string;
+}
+
+/* ------------------------------ Board summary ----------------------------- */
+
+/**
+ * One row of a static "board" (the competitor-style daily price table): the
+ * cheapest offer for a route, with the best date. Used by the pre-computed,
+ * periodically-refreshed boards (no per-visitor API calls).
+ */
+export interface RouteSummary {
+  origin: string;
+  destination: string;
+  route: string; // "TPE-VIE"
+  cheapest: number;
+  carrier: string;
+  currency: string;
+  bestDepartDate: string;
+  bestReturnDate?: string;
+  /** Outbound stops of the cheapest itinerary (0 = non-stop). */
+  stops: number;
+  /** True for the single lowest-priced route in the board (★). */
+  isCheapest: boolean;
+  itineraryId: string;
 }
