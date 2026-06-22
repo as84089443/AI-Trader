@@ -1,7 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "installCommand": "cd flight-finder && corepack enable pnpm && pnpm install --no-frozen-lockfile",
-  "buildCommand": "cd flight-finder && pnpm --filter @flight-finder/web build",
-  "outputDirectory": "flight-finder/apps/web/.next"
-}
