@@ -1,0 +1,17 @@
+{
+  "name": "flight-finder",
+  "version": "0.1.0",
+  "private": true,
+  "description": "四腿票 / 反向出發地比價工具 — reverse-origin & outer-station four-leg flight price comparison",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "test": "pnpm --filter @flight-finder/core test",
+    "typecheck": "pnpm -r typecheck",
+    "dev": "pnpm --filter @flight-finder/web dev",
+    "build": "pnpm --filter @flight-finder/web build"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}

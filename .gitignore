@@ -133,3 +133,7 @@ change.md
 .codex
 # local audit logs (never commit)
 .claude/audit/
+
+# Vercel CLI local artifacts (flight-finder deploy) — keep local, never commit
+.vercel/
+.vercelignore

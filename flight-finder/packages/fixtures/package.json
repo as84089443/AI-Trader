@@ -1,0 +1,15 @@
+{
+  "name": "@flight-finder/fixtures",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./amadeus-tpe-vie.json": "./amadeus-tpe-vie.json",
+    "./amadeus-vie-tpe.json": "./amadeus-vie-tpe.json"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

@@ -1,0 +1,464 @@
+:root {
+  /* ---- surfaces (each step lighter as it elevates) ---- */
+  --bg: #0e1014;
+  --panel: #15181e; /* card / surface */
+  --panel-2: #1c212a; /* raised: hover, input, dropdown */
+  --overlay: #232a35;
+
+  /* ---- borders ---- */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  /* ---- text ---- */
+  --text: #e6e8eb;
+  --muted: #9ba3af;
+  --faint: #6b7280;
+
+  /* ---- accent + semantic ---- */
+  --accent: #4f8dff;
+  --accent-hover: #6ba0ff;
+  --accent-weak: rgba(79, 141, 255, 0.14);
+  --accent-2: #34d399; /* good / cheap (legacy name kept) */
+  --good-bg: rgba(52, 211, 153, 0.12);
+  --star: #fbbf24; /* gold: cheapest */
+  --star-bg: rgba(251, 191, 36, 0.13);
+  --danger: #f87171;
+  --bad-bg: rgba(248, 113, 113, 0.12);
+
+  /* ---- type ---- */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Inter", "Segoe UI",
+    Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.9375rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+
+  /* ---- spacing (4px scale) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* ---- radius + shadow ---- */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 var(--fs-md) / 1.55 var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* tabular figures so every price column lines up */
+.price,
+.num,
+td.price,
+.mono {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) 96px;
+}
+
+/* ---------------------------------- hero --------------------------------- */
+
+.title {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0 0 var(--space-2);
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 0 0 var(--space-6);
+  font-size: var(--fs-md);
+  max-width: 70ch;
+}
+
+.subtitle a {
+  white-space: nowrap;
+}
+
+/* breadcrumb / page nav row */
+.crumbs {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-4);
+}
+
+/* freshness / meta chip row */
+.meta-row {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: var(--space-5);
+}
+
+/* ---------------------------------- card --------------------------------- */
+
+.panel {
+  background: linear-gradient(180deg, #171b22, #14171d);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-card);
+}
+
+.panel > strong {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+/* --------------------------------- forms --------------------------------- */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+
+label {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  margin-bottom: var(--space-1);
+  letter-spacing: 0.02em;
+}
+
+input,
+select {
+  width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--r-md);
+  padding: 9px 11px;
+  font-size: var(--fs-sm);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-weak);
+}
+
+.row {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.checkbox-row {
+  display: flex;
+  gap: var(--space-5);
+  align-items: center;
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+.checkbox-row label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+.checkbox-row input {
+  width: auto;
+}
+
+/* -------------------------------- buttons -------------------------------- */
+
+button {
+  background: var(--accent);
+  color: #06101f;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  padding: 10px 18px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+button:hover {
+  background: var(--accent-hover);
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+}
+.btn-secondary:hover {
+  background: var(--panel-2);
+}
+
+/* ---------------------------- badges / chips ----------------------------- */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.tag.demo {
+  color: var(--star);
+  border-color: rgba(251, 191, 36, 0.4);
+  background: var(--star-bg);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+.chip-direct {
+  color: var(--accent);
+  background: var(--accent-weak);
+}
+.chip-stop {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.06);
+}
+.chip-best {
+  color: #1a1400;
+  background: var(--star);
+}
+
+/* --------------------------------- table --------------------------------- */
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--r-md);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--fs-sm);
+}
+
+th,
+td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--panel-2);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+tbody tr {
+  transition: background 0.12s ease;
+}
+tbody tr:hover {
+  background: var(--panel-2);
+}
+
+td.price,
+th.price {
+  text-align: right;
+  font-weight: 700;
+}
+
+/* highlighted "best" row */
+.cheapest td {
+  background: var(--star-bg);
+}
+.cheapest td:first-child {
+  box-shadow: inset 3px 0 0 var(--star);
+}
+
+.star {
+  color: var(--star);
+  font-weight: 700;
+}
+
+.price {
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+
+/* -------------------------------- callouts ------------------------------- */
+
+.callout {
+  display: flex;
+  gap: var(--space-3);
+  border-left: 3px solid var(--accent);
+  background: var(--accent-weak);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+  margin: var(--space-3) 0 var(--space-5);
+}
+.callout.warn {
+  border-left-color: var(--star);
+  background: var(--star-bg);
+}
+.callout.bad {
+  border-left-color: var(--danger);
+  background: var(--bad-bg);
+}
+
+/* ------------------------------ booking CTA ------------------------------ */
+
+.book-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--accent-2);
+  color: #042018;
+  font-weight: 700;
+  padding: 5px 11px;
+  border-radius: var(--r-md);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+  transition: filter 0.15s ease;
+}
+.book-link:hover {
+  filter: brightness(1.08);
+  text-decoration: none;
+}
+
+.error {
+  color: var(--danger);
+}
+
+/* ------------------------------ deal cards ------------------------------- */
+
+.deal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.deal-card {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.deal-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+.deal-card.is-cheapest {
+  border-color: var(--star);
+  box-shadow: 0 0 0 1px var(--star), 0 0 24px -10px var(--star);
+}
+.deal-card .dest {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+.deal-card .fare {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.deal-card .meta {
+  color: var(--muted);
+  font-size: var(--fs-xs);
+}
+
+/* ------------------------------ flight list ------------------------------ */
+
+.flights-list {
+  display: grid;
+  gap: var(--space-2);
+}
+.flight-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--space-3) var(--space-4);
+  transition: border-color 0.15s ease;
+}
+.flight-card:hover {
+  border-color: var(--border-strong);
+}
+.flight-card.is-cheapest {
+  border-color: var(--star);
+}

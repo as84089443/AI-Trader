@@ -1,0 +1,95 @@
+{
+  "meta": { "count": 2 },
+  "data": [
+    {
+      "type": "flight-offer",
+      "id": "1",
+      "validatingAirlineCodes": ["OS"],
+      "price": { "currency": "TWD", "total": "23000.00", "grandTotal": "23000.00" },
+      "itineraries": [
+        {
+          "duration": "PT11H50M",
+          "segments": [
+            {
+              "departure": { "iataCode": "VIE", "at": "2026-10-16T11:30:00" },
+              "arrival": { "iataCode": "TPE", "at": "2026-10-17T07:20:00" },
+              "carrierCode": "OS",
+              "number": "67",
+              "duration": "PT11H50M",
+              "numberOfStops": 0
+            }
+          ]
+        },
+        {
+          "duration": "PT13H30M",
+          "segments": [
+            {
+              "departure": { "iataCode": "TPE", "at": "2026-10-26T23:55:00" },
+              "arrival": { "iataCode": "VIE", "at": "2026-10-27T06:25:00" },
+              "carrierCode": "OS",
+              "number": "68",
+              "duration": "PT13H30M",
+              "numberOfStops": 0
+            }
+          ]
+        }
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "fareDetailsBySegment": [{ "segmentId": "1", "cabin": "ECONOMY" }]
+        }
+      ]
+    },
+    {
+      "type": "flight-offer",
+      "id": "2",
+      "validatingAirlineCodes": ["BR"],
+      "price": { "currency": "TWD", "total": "25500.00", "grandTotal": "25500.00" },
+      "itineraries": [
+        {
+          "duration": "PT11H50M",
+          "segments": [
+            {
+              "departure": { "iataCode": "VIE", "at": "2026-10-16T11:30:00" },
+              "arrival": { "iataCode": "TPE", "at": "2026-10-17T07:20:00" },
+              "carrierCode": "BR",
+              "number": "62",
+              "duration": "PT11H50M",
+              "numberOfStops": 0
+            }
+          ]
+        },
+        {
+          "duration": "PT13H30M",
+          "segments": [
+            {
+              "departure": { "iataCode": "TPE", "at": "2026-10-26T23:55:00" },
+              "arrival": { "iataCode": "VIE", "at": "2026-10-27T06:25:00" },
+              "carrierCode": "BR",
+              "number": "61",
+              "duration": "PT13H30M",
+              "numberOfStops": 0
+            }
+          ]
+        }
+      ],
+      "travelerPricings": [
+        {
+          "travelerId": "1",
+          "fareOption": "STANDARD",
+          "travelerType": "ADULT",
+          "fareDetailsBySegment": [{ "segmentId": "1", "cabin": "ECONOMY" }]
+        }
+      ]
+    }
+  ],
+  "dictionaries": {
+    "carriers": {
+      "OS": "AUSTRIAN AIRLINES",
+      "BR": "EVA AIR"
+    }
+  }
+}
