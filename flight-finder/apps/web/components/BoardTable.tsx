@@ -14,6 +14,10 @@ function fmt(n: number, currency: string): string {
 }
 
 function bookingHref(s: RouteSummary, boardId: string): string {
+  // Intentionally do NOT lock the airline (and leave stops flexible): the board
+  // promises "cheapest for this route/date", so we land the user on Trip.com's
+  // absolute lowest for that route + dates rather than constraining it to the
+  // one carrier that happened to hold the cached lowest (which can price higher).
   const p = new URLSearchParams({
     from: s.origin,
     to: s.destination,
@@ -21,8 +25,7 @@ function bookingHref(s: RouteSummary, boardId: string): string {
     tripType: s.bestReturnDate ? "roundtrip" : "oneway",
     adults: "1",
     cabin: "ECONOMY",
-    nonstop: s.stops === 0 ? "on" : "off",
-    airline: s.carrier,
+    nonstop: "off",
     sub1: "board",
     sub2: s.route,
     sub3: boardId,
