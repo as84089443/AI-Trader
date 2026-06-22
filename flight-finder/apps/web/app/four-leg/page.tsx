@@ -106,10 +106,12 @@ export default function FourLegPage() {
 
   return (
     <main className="container">
-      <p style={{ marginBottom: 8 }}>
-        <a href="/">← 回反向比價</a>
-      </p>
-      <h1 className="title">🧩 外站四段票試算</h1>
+      <nav className="crumbs">
+        <a href="/">互動搜尋</a>
+        <a href="/boards">每日比價表</a>
+        <a href="/skyscanner">Skyscanner 攔截</a>
+      </nav>
+      <h1 className="title">外站四段票試算</h1>
       <p className="subtitle">
         外站→{hub || "樞紐"}→{dest || "目的地"}→{hub || "樞紐"}→外站，四段全搭。
         以較便宜的外站開票，使長程來回比台灣直購省——

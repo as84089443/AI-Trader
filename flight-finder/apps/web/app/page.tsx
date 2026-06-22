@@ -146,15 +146,15 @@ export default function Home() {
 
   return (
     <main className="container">
-      <h1 className="title">✈️ Flight Finder</h1>
+      <nav className="crumbs">
+        <a href="/boards">📅 每日比價表</a>
+        <a href="/four-leg">外站四段票試算</a>
+        <a href="/skyscanner">Skyscanner 攔截</a>
+      </nav>
+      <h1 className="title">Flight Finder ✈️</h1>
       <p className="subtitle">
-        反向出發地 + 外站四段票比價，訂票導向 Trip.com（你賺回饋）。
-        {" "}
-        <a href="/boards">📅 每日比價表 →</a>
-        {"　"}
-        <a href="/four-leg">外站四段票試算 →</a>
-        {"　"}
-        <a href="/skyscanner">Skyscanner 攔截 →</a>
+        反向出發地比價 + 外站四段票，找出哪裡進出最便宜。資料顯示用，訂票導向
+        Trip.com（你賺回饋）。想看每日自動更新的看板，點上方「每日比價表」。
       </p>
 
       <form className="panel" onSubmit={onSearch}>

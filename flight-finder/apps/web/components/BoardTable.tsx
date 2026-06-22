@@ -31,64 +31,81 @@ function bookingHref(s: RouteSummary, boardId: string): string {
   return `/api/booking?${p.toString()}`;
 }
 
+// Cheap = green, typical = amber, expensive = red (relative to this board).
+const TIER_COLOR = {
+  low: "var(--accent-2)",
+  typical: "var(--star)",
+  high: "var(--danger)",
+} as const;
+
 export function BoardTable({ board }: { board: Board }) {
-  const firstColHeader = board.layout === "origin" ? "出發地" : "目的地";
+  const prices = board.summaries.map((s) => s.cheapest);
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  const tier = (p: number): keyof typeof TIER_COLOR => {
+    if (max === min) return "low";
+    const r = (p - min) / (max - min);
+    return r < 0.34 ? "low" : r < 0.67 ? "typical" : "high";
+  };
+
   return (
     <div className="panel">
       <strong>{board.title}</strong>
-      <p className="muted" style={{ margin: "4px 0 12px" }}>
+      <p className="muted" style={{ margin: "4px 0 0" }}>
         {board.description}
       </p>
+
       {board.summaries.length === 0 ? (
-        <p className="muted">暫無資料。</p>
+        <p className="muted" style={{ marginTop: 12 }}>
+          暫無資料。
+        </p>
       ) : (
-        <div style={{ overflowX: "auto" }}>
-          <table>
-            <thead>
-              <tr>
-                <th>{firstColHeader}</th>
-                <th>最低價</th>
-                <th>航空</th>
-                <th>最佳日期</th>
-                <th>轉機</th>
-                <th>訂票</th>
-              </tr>
-            </thead>
-            <tbody>
-              {board.summaries.map((s) => {
-                const label =
-                  board.layout === "origin" ? s.origin : s.destination;
-                return (
-                  <tr key={s.route} className={s.isCheapest ? "cheapest" : ""}>
-                    <td>
-                      {s.isCheapest && <span className="star">★ </span>}
-                      <strong>{label}</strong>
-                      <div className="muted">{s.route}</div>
-                    </td>
-                    <td className="price">{fmt(s.cheapest, s.currency)}</td>
-                    <td>{s.carrier}</td>
-                    <td className="muted">
-                      {s.bestDepartDate}
-                      {s.bestReturnDate ? ` → ${s.bestReturnDate}` : ""}
-                    </td>
-                    <td className="muted">
-                      {s.stops === 0 ? "直飛" : `轉${s.stops}`}
-                    </td>
-                    <td>
-                      <a
-                        className="book-link"
-                        href={bookingHref(s, board.id)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Trip.com 訂票
-                      </a>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="deal-grid">
+          {board.summaries.map((s) => {
+            const label = board.layout === "origin" ? s.origin : s.destination;
+            const pct = max > min ? Math.round((1 - s.cheapest / max) * 100) : 0;
+            return (
+              <a
+                key={s.route}
+                className={`deal-card${s.isCheapest ? " is-cheapest" : ""}`}
+                href={bookingHref(s, board.id)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="row" style={{ justifyContent: "space-between" }}>
+                  <span className="dest">{label}</span>
+                  {s.isCheapest ? (
+                    <span className="chip chip-best">★ 最低價</span>
+                  ) : pct >= 5 ? (
+                    <span className="chip chip-direct">省 {pct}%</span>
+                  ) : null}
+                </div>
+
+                <span className="fare" style={{ color: TIER_COLOR[tier(s.cheapest)] }}>
+                  {fmt(s.cheapest, s.currency)}
+                </span>
+
+                <div className="meta">
+                  {s.carrier}
+                  {"　"}
+                  <span className={`chip ${s.stops === 0 ? "chip-direct" : "chip-stop"}`}>
+                    {s.stops === 0 ? "直飛" : `轉${s.stops}`}
+                  </span>
+                </div>
+                <div className="meta">
+                  {s.route}　|　{s.bestDepartDate}
+                  {s.bestReturnDate ? ` → ${s.bestReturnDate}` : ""}
+                </div>
+
+                <span
+                  className="book-link"
+                  style={{ marginTop: "auto", alignSelf: "flex-start" }}
+                >
+                  Trip.com 訂票 →
+                </span>
+              </a>
+            );
+          })}
         </div>
       )}
     </div>

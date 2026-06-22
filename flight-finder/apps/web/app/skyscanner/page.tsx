@@ -106,10 +106,12 @@ export default function SkyscannerPage() {
 
   return (
     <main className="container">
-      <p style={{ marginBottom: 8 }}>
-        <a href="/">← 回反向比價</a>
-      </p>
-      <h1 className="title">🛰️ Skyscanner 攔截結果</h1>
+      <nav className="crumbs">
+        <a href="/">互動搜尋</a>
+        <a href="/boards">每日比價表</a>
+        <a href="/four-leg">外站四段票試算</a>
+      </nav>
+      <h1 className="title">Skyscanner 攔截結果</h1>
       <p className="subtitle">
         由瀏覽器擴充攔截 Skyscanner 搜尋回應 → 正規化 → 同一套比價表。資料顯示用，訂票走
         Trip.com（你賺回饋）。
